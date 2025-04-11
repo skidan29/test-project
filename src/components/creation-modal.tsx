@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, FormControl, Modal, TextField } from "@mui/material";
 import {
   add,
   Reminder,
@@ -7,6 +7,10 @@ import {
 } from "../store/slices/reminders-slices";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
+
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 interface Props {
   reminder?: Reminder;
@@ -48,10 +52,20 @@ export function CreationModal({ reminder, close, isOpen }: Props) {
       aria-labelledby='parent-modal-title'
       aria-describedby='parent-modal-description'>
       <Box sx={{ ...style, width: 400 }}>
-        <h2 id='parent-modal-title'>Text in a modal</h2>
-        <p id='parent-modal-description'>
-          Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </p>
+        <FormControl fullWidth>
+          <TextField
+            size='small'
+            label={"Описание"}
+            variant='outlined'
+            multiline
+            placeholder={"Введите текст"}
+            required
+          />
+
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker label='Basic date time picker' />
+          </LocalizationProvider>
+        </FormControl>
       </Box>
     </Modal>
   );
