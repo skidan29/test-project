@@ -7,12 +7,21 @@ import {
   ReminderCreation,
   remove,
   update,
+  updateState,
 } from "./store/slices/reminders-slices";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 
 function App() {
   const reminders = useSelector((state: RootState) => state.reminders.list);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const remindersJson = localStorage.getItem("reminderlist");
+    if (remindersJson) {
+      const reminders: Reminder[] = JSON.parse(remindersJson);
+      dispatch(updateState(reminders));
+    }
+  }, [dispatch]);
 
   const addReminder = useCallback(
     (reminder: ReminderCreation) => dispatch(add(reminder)),
