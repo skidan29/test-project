@@ -1,36 +1,22 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "./store/store";
-import {
-  add,
-  Reminder,
-  ReminderCreation,
-  remove,
-  update,
-  updateState,
-} from "./store/slices/reminders-slices";
+import { Reminder, remove, updateState } from "./store/slices/reminders-slices";
 import { useCallback, useEffect, useState } from "react";
 
-import {
-  Button,
-  Grid,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Paper, TableContainer, Typography } from "@mui/material";
 
 import { StyledBg, StyledContainer } from "./App.styles";
+import { RemindersTable } from "./components/reminders-table";
 import { CreationModal } from "./components/creation-modal";
 
 function App() {
   const remindersList = useSelector((state: RootState) => state.reminders.list);
   const dispatch = useDispatch();
 
-  const [isOpenModal, setOpenModal] = useState(false);
+  const [creationModal, setCreationModal] = useState<{
+    isOpen: boolean;
+    payload?: Reminder;
+  }>({ isOpen: false });
 
   useEffect(() => {
     const remindersJson = localStorage.getItem("reminderlist");
@@ -40,20 +26,19 @@ function App() {
     }
   }, [dispatch]);
 
-  const handleCloseModal = useCallback(() => setOpenModal(false), []);
+  const handleCloseCreationModal = useCallback(
+    () => setCreationModal({ isOpen: false }),
+    []
+  );
 
-  const addReminder = useCallback(
-    (reminder: ReminderCreation) => dispatch(add(reminder)),
-    [dispatch]
+  const handleOpenCreationModal = useCallback(
+    (reminder?: Reminder) =>
+      setCreationModal({ isOpen: true, payload: reminder }),
+    []
   );
 
   const deleteReminder = useCallback(
     (reminderId: string) => dispatch(remove(reminderId)),
-    [dispatch]
-  );
-
-  const updateReminder = useCallback(
-    (reminder: Reminder) => dispatch(update(reminder)),
     [dispatch]
   );
 
@@ -64,77 +49,28 @@ function App() {
           Напоминания:
         </Typography>
         <TableContainer component={Paper}>
-          <Table aria-label='simple table'>
-            <TableHead>
-              <TableRow>
-                <TableCell>
-                  <Typography variant='h6'>Описание</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography variant='h6'>Дата</Typography>
-                </TableCell>
-                <TableCell align='right'>
-                  <Typography variant='h6'>Действия</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {remindersList.map((reminder) => (
-                <TableRow key={reminder.id}>
-                  <TableCell>{reminder.caption}</TableCell>
-                  <TableCell>{reminder.deadline}</TableCell>
-                  <TableCell align='right'>
-                    <Grid display='flex' justifyContent={"end"} gap={3}>
-                      <Button
-                        color='error'
-                        size='small'
-                        onClick={() => deleteReminder(reminder.id)}
-                        variant='contained'
-                        type='button'>
-                        Удалить
-                      </Button>
-                      <Button
-                        size='small'
-                        variant='contained'
-                        onClick={() =>
-                          updateReminder({
-                            id: reminder.id,
-                            caption: "edit",
-                            deadline: "11-03-2025",
-                          })
-                        }
-                        type='button'>
-                        Изменить
-                      </Button>
-                    </Grid>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <RemindersTable
+            reminders={remindersList}
+            remove={deleteReminder}
+            edit={handleOpenCreationModal}
+          />
           <Grid padding={3}>
             <Button
               size='medium'
               variant='contained'
-              onClick={() =>
-                addReminder({
-                  caption: "edit",
-                  deadline: "11-03-2025",
-                })
-              }
+              onClick={() => handleOpenCreationModal()}
               type='button'>
               Добавить
             </Button>
           </Grid>
         </TableContainer>
-        <Button type='button' onClick={() => setOpenModal(true)}>
-          Open modal
-        </Button>
       </StyledContainer>
 
       <CreationModal
-        isOpen={isOpenModal}
-        close={handleCloseModal}></CreationModal>
+        isOpen={creationModal.isOpen}
+        reminder={creationModal.payload}
+        close={handleCloseCreationModal}
+      />
     </StyledBg>
   );
 }

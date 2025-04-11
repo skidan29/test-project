@@ -1,8 +1,17 @@
 import { Box, Modal } from "@mui/material";
+import {
+  add,
+  Reminder,
+  ReminderCreation,
+  update,
+} from "../store/slices/reminders-slices";
+import { useDispatch } from "react-redux";
+import { useCallback } from "react";
 
 interface Props {
-  isOpen: boolean;
+  reminder?: Reminder;
   close: () => void;
+  isOpen: boolean;
 }
 
 const style = {
@@ -17,7 +26,21 @@ const style = {
   p: 4,
 };
 
-export function CreationModal({ isOpen, close }: Props) {
+export function CreationModal({ reminder, close, isOpen }: Props) {
+  const dispatch = useDispatch();
+
+  console.log(reminder);
+
+  const addReminder = useCallback(
+    (reminder: ReminderCreation) => dispatch(add(reminder)),
+    [dispatch]
+  );
+
+  const updateReminder = useCallback(
+    (reminder: Reminder) => dispatch(update(reminder)),
+    [dispatch]
+  );
+
   return (
     <Modal
       open={isOpen}
