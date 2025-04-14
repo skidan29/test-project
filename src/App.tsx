@@ -1,13 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./store/store";
-import { Reminder, remove, updateState } from "./store/slices/reminders-slices";
-import { useCallback, useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from './store/store';
+import { Reminder, remove, updateState } from './store/slices/reminders-slices';
+import { useCallback, useEffect, useState } from 'react';
 
-import { Button, Grid, Paper, TableContainer, Typography } from "@mui/material";
+import { Button, Grid, Paper, TableContainer, Typography } from '@mui/material';
 
-import { StyledBg, StyledContainer } from "./App.styles";
-import { RemindersTable } from "./components/reminders-table";
-import { CreationModal } from "./components/creation-modal";
+import { StyledBg, StyledContainer } from './App.styles';
+import { RemindersTable } from './components/reminders-table';
+import { CreationModal } from './components/creation-modal';
 
 function App() {
   const remindersList = useSelector((state: RootState) => state.reminders.list);
@@ -19,35 +19,32 @@ function App() {
   }>({ isOpen: false });
 
   useEffect(() => {
-    const remindersJson = localStorage.getItem("reminderlist");
+    const remindersJson = localStorage.getItem('reminderlist');
     if (remindersJson) {
       const reminders: Reminder[] = JSON.parse(remindersJson);
       dispatch(updateState(reminders));
     }
   }, [dispatch]);
 
-  const handleCloseCreationModal = useCallback(
-    () => setCreationModal({ isOpen: false }),
-    []
-  );
+  const handleCloseCreationModal = useCallback(() => setCreationModal({ isOpen: false }), []);
 
   const handleOpenCreationModal = useCallback(
-    (reminder?: Reminder) =>
-      setCreationModal({ isOpen: true, payload: reminder }),
-    []
+    (reminder?: Reminder) => setCreationModal({ isOpen: true, payload: reminder }),
+    [],
   );
 
   const deleteReminder = useCallback(
     (reminderId: string) => dispatch(remove(reminderId)),
-    [dispatch]
+    [dispatch],
   );
 
   return (
     <StyledBg>
       <StyledContainer>
-        <Typography variant='h4' padding={3}>
+        <Typography variant="h5" padding={3}>
           Напоминания:
         </Typography>
+
         <TableContainer component={Paper}>
           <RemindersTable
             reminders={remindersList}
@@ -56,10 +53,12 @@ function App() {
           />
           <Grid padding={3}>
             <Button
-              size='medium'
-              variant='contained'
+              data-testid="addBtn"
+              size="medium"
+              variant="contained"
               onClick={() => handleOpenCreationModal()}
-              type='button'>
+              type="button"
+            >
               Добавить
             </Button>
           </Grid>
