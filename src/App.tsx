@@ -45,24 +45,25 @@ function App() {
           Напоминания:
         </Typography>
 
-        <TableContainer component={Paper}>
+        <TableContainer sx={{ maxHeight: 740 }} component={Paper}>
           <RemindersTable
             reminders={remindersList}
             remove={deleteReminder}
             edit={handleOpenCreationModal}
           />
-          <Grid padding={3}>
-            <Button
-              data-testid="addBtn"
-              size="medium"
-              variant="contained"
-              onClick={() => handleOpenCreationModal()}
-              type="button"
-            >
-              Добавить
-            </Button>
-          </Grid>
         </TableContainer>
+        <Grid paddingTop={2}>
+          <Button
+            fullWidth
+            data-testid="addBtn"
+            size="large"
+            variant="contained"
+            onClick={() => handleOpenCreationModal()}
+            type="button"
+          >
+            Добавить
+          </Button>
+        </Grid>
       </StyledContainer>
 
       <CreationModal
