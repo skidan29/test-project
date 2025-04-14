@@ -8,19 +8,37 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Reminder } from '../../store/slices/reminders-slices';
+import { Reminder, remove, updateState } from '../../store/slices/reminders-slices';
 import dayjs from 'dayjs';
 import { NoContent } from './reminders-table.styles';
+import { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 const DATE_FORMAT = 'DD.MM.YYYY hh:mm';
 
 interface Props {
-  reminders: Reminder[];
-  remove: (id: string) => void;
   edit: (reminder: Reminder) => void;
 }
 
-export function RemindersTable({ reminders, remove, edit }: Props) {
+export function RemindersTable({ edit }: Props) {
+  const dispatch = useDispatch();
+  const reminders = useSelector((state: RootState) => state.reminders.list);
+
+  useEffect(() => {
+    const remindersJson = localStorage.getItem('reminderlist');
+    if (remindersJson) {
+      const reminders: Reminder[] = JSON.parse(remindersJson);
+      dispatch(updateState(reminders));
+    }
+  }, [dispatch]);
+
+  const removeReminder = useCallback(
+    (reminderId: string) => {
+      dispatch(remove(reminderId));
+    },
+    [dispatch],
+  );
   return (
     <Table data-testid="remindersTable" aria-label="simple table">
       <TableHead>
@@ -49,7 +67,7 @@ export function RemindersTable({ reminders, remove, edit }: Props) {
                     data-testid="removeBtn"
                     color="error"
                     size="small"
-                    onClick={() => remove(reminder.id)}
+                    onClick={() => removeReminder(reminder.id)}
                     variant="contained"
                     type="button"
                   >

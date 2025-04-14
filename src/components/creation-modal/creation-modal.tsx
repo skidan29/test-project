@@ -10,7 +10,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import dayjs, { Dayjs } from 'dayjs';
 
 const style = {
-  position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -18,6 +17,7 @@ const style = {
   bgcolor: 'background.paper',
   border: '1px solid #000',
   boxShadow: 24,
+  position: 'relative',
   p: 4,
 };
 
@@ -68,9 +68,9 @@ export function CreationModal({ reminder, close, isOpen }: Props) {
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
-      <Box sx={{ ...style, width: 400, position: 'relative' }}>
+      <Box sx={{ ...style }}>
         <Grid display="flex" justifyContent="space-between" paddingBottom={3}>
-          <Typography variant="h6">{reminder ? 'Изменить' : 'Добавить'} напоминание</Typography>
+          <Typography variant="h6">{reminder ? 'Редактирование напоминания' : 'Добавление напоминания'}</Typography>
           <CloseIcon sx={{ cursor: 'pointer' }} onClick={close}></CloseIcon>
         </Grid>
 
