@@ -70,8 +70,10 @@ export function CreationModal({ reminder, close, isOpen }: Props) {
     >
       <Box sx={{ ...style }}>
         <Grid display="flex" justifyContent="space-between" paddingBottom={3}>
-          <Typography variant="h6">{reminder ? 'Редактирование напоминания' : 'Добавление напоминания'}</Typography>
-          <CloseIcon sx={{ cursor: 'pointer' }} onClick={close}></CloseIcon>
+          <Typography variant="h6">
+            {reminder ? 'Редактирование напоминания' : 'Добавление напоминания'}
+          </Typography>
+          <CloseIcon data-testid="close" sx={{ cursor: 'pointer' }} onClick={close}></CloseIcon>
         </Grid>
 
         <FormControl fullWidth>

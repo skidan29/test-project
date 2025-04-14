@@ -33,7 +33,7 @@ describe('App', () => {
     expect(screen.getByTestId('creationModal')).toBeInTheDocument();
   });
 
-  it('the table should render', () => {
+  it('the table should be rendered', () => {
     render(
       <Provider store={store}>
         <App />

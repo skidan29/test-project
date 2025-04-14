@@ -70,6 +70,20 @@ describe('CreationModal', () => {
     expect(actions).toContainEqual(update(store.getState().reminders.list[0]));
   });
 
+  it('close', () => {
+    render(
+      <Provider store={store}>
+        <CreationModal close={mockClose} isOpen={true} />
+      </Provider>,
+    );
+
+    const button = screen.getByTestId('close');
+
+    fireEvent.click(button);
+
+    expect(mockClose).toHaveBeenCalled();
+  });
+
   it('reducer add must be called', () => {
     render(
       <Provider store={store}>

@@ -35,7 +35,7 @@ describe('remindersSlice', () => {
   it('should handle update', () => {
     const existingReminder: Reminder = {
       id: '1',
-      caption: 'reminder',
+      caption: 'Reminder',
       deadline: '2025-04-04',
     };
 
@@ -58,7 +58,7 @@ describe('remindersSlice', () => {
   it('should handle remove', () => {
     const existingReminder: Reminder = {
       id: '1',
-      caption: 'reminder',
+      caption: 'Reminder',
       deadline: '2025-04-05',
     };
 
